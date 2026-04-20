@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>けい製作 - Advanced Cyber Attack</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* ターミナル外枠 */
+        #terminal {
+            width: 90%;
+            max-width: 700px;
+            height: 500px;
+            background: rgba(0, 10, 0, 0.9);
+            border: 2px solid #00ff00;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            z-index: 10;
+        }
+
+        #output {
+            flex-grow: 1;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        .input-line {
+            display: flex;
+            border-top: 1px solid #333;
+            padding-top: 5px;
+        }
+
+        input {
+            background: transparent;
+            border: none;
+            color: #0ff;
+            flex-grow: 1;
+            outline: none;
+            font-family: inherit;
+        }
+
+        /* 攻撃アニメーション（日本からアメリカへ） */
+        #map-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            background: #000;
+        }
+
+        .laser {
+            position: absolute;
+            height: 2px;
+            background: #ff0000;
+            box-shadow: 0 0 10px #ff0000;
+            animation: shoot 1s ease-in forwards;
+        }
+
+        @keyframes shoot {
+            0% { width: 0; left: 30%; top: 40%; transform: rotate(-10deg); }
+            100% { width: 40%; left: 30%; top: 35%; transform: rotate(-10deg); }
+        }
+
+        /* 強制ホーム画面（偽のデスクトップ） */
+        #home-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #1e1e1e;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            color: white;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<div id="home-screen">
+    <div style="font-size: 5rem;">📱</div>
+    <h2>CONNECTION LOST</h2>
+    <p>ホーム画面に戻りました</p>
+    <button onclick="location.reload()" style="padding: 10px; cursor: pointer;">再起動</button>
+</div>
+
+<div id="map-container">
+    <div style="position: relative; width: 80%; height: 60%; border: 1px dashed #333;">
+        <span style="position: absolute; left: 20%; top: 45%;">[JP]</span>
+        <span style="position: absolute; right: 20%; top: 35%;">[US]</span>
+        <div id="laser-effect" class="laser" style="display: none;"></div>
+    </div>
+</div>
+
+<div id="terminal">
+    <div id="output">=== KEI-PRODUCTION DARK-WEB TERMINAL ===
+READY...
+(Try: "サイバー攻撃" or "ネット切断" or "0popp@gnsiuw80")</div>
+    <div class="input-line">
+        <span>admin@kei:~$</span>
+        <input type="text" id="userInput" autofocus autocomplete="off">
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById('userInput');
+    const output = document.getElementById('output');
+    const mapContainer = document.getElementById('map-container');
+    const laser = document.getElementById('laser-effect');
+    const home = document.getElementById('home-screen');
+
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const val = input.value;
+            input.value = '';
+            handleCommand(val);
+        }
+    });
+
+    function addLog(msg, color="#0f0") {
+        const div = document.createElement('div');
+        div.style.color = color;
+        div.textContent = msg;
+        output.appendChild(div);
+        output.scrollTop = output.scrollHeight;
+    }
+
+    function handleCommand(cmd) {
+        addLog("> " + cmd);
+
+        if (cmd === "サイバー攻撃") {
+            addLog("INITIATING TRANS-PACIFIC ATTACK...", "#f00");
+            mapContainer.style.display = "flex";
+            laser.style.display = "block";
+            
+            setTimeout(() => {
+                addLog("ATTACKING US SERVER... SUCCESS");
+                addLog("DATA EXFILTRATED FROM DC-O1");
+            }, 1000);
+
+            setTimeout(() => {
+                mapContainer.style.display = "none";
+                laser.style.display = "none";
+            }, 2500);
+
+        } else if (cmd === "ネット切断") {
+            addLog("DISCONNECTING FROM NETWORK...", "#f00");
+            setTimeout(() => {
+                home.style.display = "flex"; // 強制ホーム画面
+            }, 1000);
+
+        } else if (cmd === "0popp@gnsiuw80") {
+            addLog("TARGET TRACED: 東京都渋谷区神南...", "#0ff");
+        } else {
+            addLog("Unknown command.");
+        }
+    }
+</script>
+
+</body>
+</html>
